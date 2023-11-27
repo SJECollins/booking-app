@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="text-center text-gray-800 text-2xl font-bold my-6">Booking Details</h1>
+
+<div class="flex flex-col items-center justify-center">
+    <h2 class="text-center text-gray-800 text-xl">Booking Details</h2>
+    <div class="flex flex-col justify-evenly">
+        <p>Customer Name: {{ booking.customer_name }}</p>
+        <p>Table Number: {{ booking.table_number }}</p>
+        <p>Date: {{ booking.date }}</p>
+        <p>Time: {{ booking.get_time_display }}</p>
+        <p>Party Number: {{ booking.party_number }}</p>
+        <p>Dietary Requirements: {{ booking.dietary_requirements }}</p>
+    </div>
+    <div class="flex justify-evenly w-full my-2">
+        <a href="{% url 'booking_edit' booking.id %}" class="bg-gray-700 text-white px-2 py-1">Edit</a>
+        <a href="{% url 'booking_delete' booking.id %}" class="bg-gray-700 text-white px-2 py-1">Delete</a>
+    </div>
+    <a href="{% url 'booking_list' %}" class="bg-gray-700 text-white px-2 py-1 my-2">Back to Booking List</a>
+
+</div>
+{% endblock %}

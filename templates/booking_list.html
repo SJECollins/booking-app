@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1 class="text-center text-gray-800 text-2xl font-bold">Booking List</h1>
+
+<div>
+    <h2 class="text-center text-gray-800 text-xl">Weekly Bookings</h2>
+    <div class="flex justify-between mx-4 text-white">
+        <a class="bg-gray-700 px-2 py-1" href="{% url 'booking_list' %}?week_offset={{ week_offset|add:'-1' }}">&#10096;
+            Previous
+            Week</a>
+        <a class="bg-gray-700 px-2 py-1" href="{% url 'booking_list' %}?week_offset={{ week_offset|add:'1' }}">Next
+            Week &#10097;</a>
+    </div>
+
+
+    <div class="flex justify-evenly flex-wrap lg:flex-nowrap">
+        {% for day in weekdays %}
+        <div class="w-full p-2">
+            <div class="bg-gray-700">
+                <h3 class="text-white py-2 text-center">{{ day }}</h3>
+            </div>
+            {% for data in remaining_capacity_data %}
+            {% if data.day == day %}
+            <p class="text-center">Remaining Capacity: {{ data.remaining_capacity_percentage }}%</p>
+            {% endif %}
+            {% endfor %}
+
+            <ul>
+                {% for booking in bookings %}
+                {% if booking.date.weekday == forloop.parentloop.counter0 %}
+                <li>Table {{ booking.table_number }} - {{ booking.get_time_display }}</li>
+                <li>
+                    <a href="{% url 'booking_detail' booking.id %}" class="text-gray-800 font-bold">Details</a>
+                </li>
+                <hr>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
