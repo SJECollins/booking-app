@@ -22,7 +22,9 @@
             </div>
             {% for data in remaining_capacity_data %}
             {% if data.day == day %}
-            <p class="text-center">Remaining Capacity: {{ data.remaining_capacity_percentage }}%</p>
+            <p class="text-center">Available: {{ data.remaining_capacity}} slots
+                ({{ data.remaining_capacity_percentage }}%)</p>
+            <hr>
             {% endif %}
             {% endfor %}
 

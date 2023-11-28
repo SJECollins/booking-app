@@ -40,7 +40,11 @@ def booking_list(request):
     )
     end_of_week = start_of_week + timezone.timedelta(days=6)
 
-    bookings = Table.objects.filter(date__range=[start_of_week, end_of_week])
+    bookings = Table.objects.filter(date__range=[start_of_week, end_of_week]).order_by(
+        "time"
+    )
+
+    print(bookings)
 
     if not bookings.exists():
         message = "No bookings found for this week."
@@ -55,19 +59,15 @@ def booking_list(request):
     for day_index in range(7):
         date = start_of_week + timezone.timedelta(days=day_index)
 
-        # Calculate available capacity for the day
         total_minutes = CLOSING - OPENING
         booking_slots = total_minutes // DURATION
         available_capacity = available_tables * booking_slots
 
-        # Calculate booked capacity for the day
-        bookings = Table.objects.filter(date=date)
-        booked_capacity = bookings.count() or 0
+        booked = Table.objects.filter(date=date)
+        booked_capacity = booked.count() or 0
 
-        # Calculate remaining capacity for the day
         remaining_capacity = max(0, available_capacity - booked_capacity)
 
-        # Calculate remaining capacity percentage for the day
         remaining_capacity_percentage = (
             100 * remaining_capacity / available_capacity
             if available_capacity > 0
